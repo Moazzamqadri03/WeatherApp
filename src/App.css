@@ -1,1 +1,113 @@
 @import "tailwindcss";
+
+@layer utilities {
+  .weather-overlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0.78;
+    pointer-events: none;
+    transition: background 0.7s ease, opacity 0.7s ease;
+  }
+
+  .weather-animation {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .overlay-default {
+    background: radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 30%), linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.98));
+  }
+
+  .overlay-sunny {
+    background: radial-gradient(circle at top center, rgba(255, 255, 255, 0.22), transparent 25%), linear-gradient(180deg, rgba(253, 230, 138, 0.5), rgba(245, 158, 11, 0.35));
+  }
+
+  .overlay-cloudy {
+    background: linear-gradient(180deg, rgba(148, 163, 184, 0.4), rgba(51, 65, 85, 0.9));
+  }
+
+  .overlay-rainy {
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(30, 64, 175, 0.82));
+  }
+
+  .overlay-snowy {
+    background: linear-gradient(180deg, rgba(226, 232, 240, 0.85), rgba(148, 163, 184, 0.55));
+  }
+
+  .overlay-windy {
+    background: linear-gradient(180deg, rgba(56, 189, 248, 0.45), rgba(15, 23, 42, 0.92));
+  }
+
+  .overlay-stormy {
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));
+  }
+
+  .animation-default::before,
+  .animation-sunny::before,
+  .animation-cloudy::before,
+  .animation-rainy::before,
+  .animation-snowy::before,
+  .animation-windy::before,
+  .animation-stormy::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .animation-sunny::before {
+    background: radial-gradient(circle at top center, rgba(255, 255, 255, 0.16), transparent 18%);
+  }
+
+  .animation-cloudy::before {
+    background-image: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.12), transparent 18%), radial-gradient(circle at 80% 35%, rgba(255, 255, 255, 0.1), transparent 16%);
+    opacity: 0.85;
+  }
+
+  .animation-rainy::before {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px), linear-gradient(135deg, rgba(255, 255, 255, 0.05) 20%, transparent 20%);
+    background-size: 100% 20px, 60px 60px;
+    animation: rain-move 0.8s linear infinite;
+  }
+
+  .animation-snowy::before {
+    background-image: radial-gradient(circle, rgba(255,255,255,0.75) 1px, transparent 1px);
+    background-size: 15px 15px;
+    opacity: 0.6;
+    animation: snow-fall 8s linear infinite;
+  }
+
+  .animation-windy::before {
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 30%, transparent 30%), linear-gradient(120deg, rgba(255, 255, 255, 0.08) 18%, transparent 18%);
+    background-size: 180px 180px, 140px 140px;
+    animation: wind-sweep 4s linear infinite;
+  }
+
+  .animation-stormy::before {
+    background-image: radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.18), transparent 15%), linear-gradient(135deg, rgba(255, 255, 255, 0.05) 20%, transparent 20%);
+    background-size: 120px 120px, 100% 100%;
+    animation: storm-flash 1.7s ease-in-out infinite;
+  }
+
+  @keyframes rain-move {
+    from { background-position: 0 0, 0 0; }
+    to { background-position: 0 20px, 60px 60px; }
+  }
+
+  @keyframes snow-fall {
+    from { background-position: 0 0; }
+    to { background-position: 0 120px; }
+  }
+
+  @keyframes wind-sweep {
+    from { background-position: 0 0, 0 0; }
+    to { background-position: -180px 0, 140px 140px; }
+  }
+
+  @keyframes storm-flash {
+    0%, 100% { opacity: 0.42; }
+    50% { opacity: 0.85; }
+  }
+}
