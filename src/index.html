@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherApp</title>
+    <style>
+        body{
+            background-color:#87CEEB;
+            border: 2px solid blue;
+            width: 360px;
+        }
+        .searchBar{
+            display: flex;
+        }
+        .searchBar input{
+            padding: 14px;
+            background-color: #418caa;
+            border: 2px solid #306980 ;
+            border-right: 0;
+            align-self: center;
+            margin-left: 50px;
+            /* margin:40px 50%;
+            margin-right: 0; */
+        }
+        .searchBar input::placeholder{
+            color:rgb(82, 82, 82);
+            font-weight: 500;
+            font-size: larger;
+        }
+        .searchBar button img{
+            height: 25px;
+            
+        }
+        .searchBar button{
+            border: 2px solid #306980 ;
+            border-left: 0;
+            background-color: #418caa;
+            height: 47px;
+            margin:40px 0;
+        }
+        .searchBar button:hover{
+            cursor: pointer;
+            background-color: #53b2d8
+        }
+        .card{
+            box-shadow: 0 8px 16px #193946;
+            padding: 3px;
+            border-radius: 3px;
+            color:whitesmoke;
+            display: none;
+            background: rgb(8,85,88);
+        background: linear-gradient(90deg, rgba(8,85,88,1) 0%, rgba(59,131,138,1) 48%, rgba(0,224,255,1) 100%);
+        }
+        h2{
+            margin:0;
+        }
+        h4{
+            margin:0;
+        }
+        h5{
+            margin:0;
+        }
+        .con1{
+            display: flex;
+            flex-direction: row;
+        }
+        .con1 img{
+            width:80px;
+        }
+        .con1 p{
+            width:80px;
+            font-size:xx-large;
+            font-weight: 900;
+        }
+        .detail{
+            display: flex;
+            flex-direction: row;
+        }
+        .detail div{
+            border: 2px solid #418caa;
+            margin:8px;
+            padding: 4px;
+            border-radius: 6px;
+            background: rgb(0,224,255);
+        background: linear-gradient(90deg, rgba(0,224,255,1) 0%, rgba(59,131,138,1) 48%, rgba(8,85,88,1) 100%);
+        }
+        .detail div p{
+            font-weight: 600;
+            
+        }
+        footer {
+            background-color: #418caa;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 320px;
+        }
+        footer p {
+            margin: 0;
+            font-size: 14px;
+            
+        }
+        .heart {
+            color: red;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="searchBar">
+        <input type="text" placeholder="Enter City">
+        <button><img src="images/search.png" alt="icon"></button>
+    </div>
+    <div class="display">
+        <div class="card">
+            <h2>Loading City Name</h2>
+            <h4>Loading date</h4>
+            <h5>Loading Time</h5>
+            <div class="con1">
+                <img src="" alt="weatherSymbol">
+                <p id="temprature">Loading Temrature</p>
+            </div>   
+            <p id="description">Loading description</p>
+            <div class="detail">
+                <div class="airQ"><p>Air Quality</p><i>28</i></div>
+                <div class="wind"><p>Wind speed</p><i>6km/h</i></div>
+                <div class="humidity"><p>Humidity</p><i>46%</i></div>
+                <div class="vis"><p>visibility</p><i>18km</i></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Made with Love<span class="heart">&hearts;</span> by: Uzaib Bashir Malik</p>
+    </footer>
+    
+    <script>
+        const apiKey = "ec579c5b287028b0d80aad62987df7c8"; // Replace with your actual API  key
+
+        document.querySelector("button").addEventListener("click", function(){
+            const card = document.querySelector(".card");
+            if(card.style.display === "none" || card.style.display === ""){
+                card.style.display = "block";
+            } 
+            
+            const city = document.querySelector("input").value;
+            if (city) {
+                const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+                
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.cod === "404") {
+                            alert("City is not in our database\ncontact Uzaib for adding it");
+                        } else {
+                            const cityName = data.name;
+                            const temperature = data.main.temp;
+                            const weatherDescription = data.weather[0].description;
+                            const icon = `http://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+                            const airQuality = "N/A"; // Placeholder, as air quality data is not included in basic weather API
+
+                            // Update the card with the fetched data
+                            document.querySelector(".card h2").textContent = cityName;
+                            document.querySelector(".card h4").textContent = new Date().toLocaleString();
+                            document.querySelector(".card h5").textContent = "[extra]";
+                            document.querySelector(".card .con1 img").src = icon;
+                            document.querySelector("#temprature").textContent = `${temperature} °C`;
+                            document.querySelector("#description").textContent = `Description: ${weatherDescription}`;
+                            document.querySelector(".card .airQ i").textContent = airQuality;
+                            document.querySelector(".card .wind i").textContent = "NAkm/h"; // Placeholder for wind speed
+                            document.querySelector(".card .humidity i").textContent = "NA%"; // Placeholder for humidity
+                            document.querySelector(".card .vis i").textContent = "NAkm"; // Placeholder for visibility
+                        }
+                    })
+                    .catch(err => alert("Error fetching data"));
+            } else {
+                alert("Please enter a city name.");
+            }
+
+            
+        });
+
+    </script>
+</body>
+</html>
